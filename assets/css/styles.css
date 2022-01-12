@@ -163,3 +163,12 @@ a.nav-item:hover {
 .list {
   text-align: center;
 }
+
+.badge {
+  text-align: center;
+  position: relative;
+  display:inline-block;
+  clear:left;
+  margin: 0 auto;
+  /*margin-left: 26rem;*/
+}
