@@ -156,3 +156,6 @@ a.nav-item:hover {
   z-index: 1;
 }
 
+.centered {
+  text-align: center;
+}
