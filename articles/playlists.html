@@ -2,17 +2,24 @@
 <html>
 
 <head>
-    <title>Mime's Music 🎵</title>
+    <title>Mime's Playlists 📻</title>
     <!-- css files -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.1/css/bulma.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/styles_playlists.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <script src="https://kit.fontawesome.com/392149d4df.js" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@700&display=swap');
+    </style>
 
-    <link rel="icon" type="image/x-icon" href="assets/img/favicon.png">
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.png">
     <meta name="author" content="Mime">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
 </head>
 
 <body>
@@ -64,9 +71,9 @@
                 </div>
 
                 <div class="nav-right nav-menu">
-                    <a class="nav-item" href="index.html">Home</a>
+                    <a class="nav-item" href="../index.html">Home</a>
                     <a class="nav-item" href="#projects">Projects</a>
-                    <a class="nav-item" href="music.html">Music</a>
+                    <a class="nav-item" href="../music.html">Music</a>
                     <a class="nav-item" href="https://sites.google.com/view/thesecretcorner/">CTF Blog</a>
 
                     <!--<a class="nav-item" href="#social">Social</a>-->
@@ -85,13 +92,13 @@
     <section id="about" class="section section-1">
         <div class="container has-text-centered">
             <!-- Source: https://flic.kr/p/pAZBNK -->
-            <img class="avatar" src="assets/img/profile.png">
+            <img class="avatar" src="../assets/img/profile.png">
         </div>
         <div class="container"></br>
 
             <h1 class="titlecenteredbold is-3 animate__animated animate__fadeInDown">Samuel Cheng</h1>
             <p class="intro animate__animated animate__fadeInDown">
-                I am a music producer and developer. Currently a Y5 student at Anglo Chinese School
+                I am a music producer and back-end developer. Currently a Y5 student at Anglo Chinese School
                 (Independent) and studying Computer Science. Currently interested in Cyber Security.
             </p>
         </div>
@@ -101,41 +108,54 @@
     <section id="projects" class="section section-2">
         <div class="container">
             <div class="has-text-centered">
-                <h3 class="title is-3">Music</h3>
+                <h3 class="title is-3">Playlists</h3>
             </div>
-            <p>Hello! I LOVE music. <br />Here i shall dump my music things haha feel free to look around :0</p>
+            <p>Hi! If you have already made this far, thank you so much. Anyways, my taste in music always has been
+                something like <span class="textured_playlist_text">rave, dubstep, kpop and ccm.</span></p>
+
+            <br />
+            <a target="_blank" href="https://open.spotify.com/playlist/6sEaNS2PSU1QNNkOtrvRTE?si=92369e51f1004429">
+                <div class="w3-container w3-blue-grey">
+                    <h1 class="playlist_list_text">Hype.</h1>
+                    <h4>#Rave #Dubstep #House #Bass</h4>
+                    Bass Bangers. 😩 
+
+                    <p>&nbsp;</p>
+                </div>
+            </a>
+            <a target="_blank" href="https://open.spotify.com/playlist/28k8Ck5jovi8RqwHjGLk2M?si=89e857bdc7fc42e3">
+                <div class="w3-container w3-grey">
+                    <h1 class="playlist_list_text">Lofi/Study Music.</h1>
+                    <h4>#Lofi #HipHop</h4>
+                    Lofi for studying. 📖🖋️
+
+                    <p>&nbsp;</p>
+                </div>
+            </a>
+            <a target="_blank" href="https://open.spotify.com/playlist/6m2BAyG9eI0iVLY1jDpy5t?si=f8751d24fbb84aaa">
+                <div class="w3-container w3-brown">
+                    <h1 class="playlist_list_text">Fresh</h1>
+                    <h4>#Korean #Japanese #Kawaii</h4>
+                    Vibessss 💕
+
+                    <p>&nbsp;</p>
+                </div>
+            </a
+
 
         </div>
-
     </section>
-    <div class="column">
-        <div class="box list">
-            <article>
-                <div>
-                    <div class="container">
-                        <a href="articles/playlists.html">
-                            <img src="assets/img/articles_playlists_1.png" class="list" alt="Playlists">
-                        </a>
-                        <!--<div class="overlay">
-                            <h3 class="title hoveredtext">Go to site.</h3>
-                        </div>-->
-                    </div>
-                    <!--
-                    <figure class="image project-figure">
-                        <img src="assets/img/projects_dungeon.gif" alt="Image">
-                    </figure>-->
-                </div>
-                <div>
-                    <h3 class="bigtitle list">Mime's Playlists</h3>
-                    <p>
-                        My playlists are here.
-                    </p>
-                </div>
-            </article>
-        </div>
-    </div>
 
+    <style>
+        .textured_playlist_text {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            font-size: larger;
+        }
 
+        .playlist_list_text {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+    </style>
 
     <!-- Footer -->
     <section class="section-4 has-text-centered container">

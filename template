@@ -56,29 +56,29 @@
             <span class="icon">
                 <i class="fab fa-spotify"></i>
             </span>
-        </div>
-        <a href="https://soundcloud.com/sxfty_producer" class="nav-item">
-            <span class="icon">
-                <i class="fab fa-soundcloud"></i>
-            </span>
-        </div>
+            </div>
+            <a href="https://soundcloud.com/sxfty_producer" class="nav-item">
+                <span class="icon">
+                    <i class="fab fa-soundcloud"></i>
+                </span>
+                </div>
 
-        <div class="nav-right nav-menu">
-            <a class="nav-item" href="index.html">Home</a>
-            <a class="nav-item" href="#projects">Projects</a>
-            <a class="nav-item" href="music.html">Music</a>
-            <a class="nav-item" href="https://sites.google.com/view/thesecretcorner/">CTF Blog</a>
-            
-            <!--<a class="nav-item" href="#social">Social</a>-->
-        </div>
+                <div class="nav-right nav-menu">
+                    <a class="nav-item" href="index.html">Home</a>
+                    <a class="nav-item" href="#projects">Projects</a>
+                    <a class="nav-item" href="music.html">Music</a>
+                    <a class="nav-item" href="https://sites.google.com/view/thesecretcorner/">CTF Blog</a>
 
-        <!-- This "nav-toggle" hamburger menu is only visible on mobile -->
-        <!-- You need JavaScript to toggle the "is-active" class on "nav-menu" -->
-        <span class="nav-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </span>
+                    <!--<a class="nav-item" href="#social">Social</a>-->
+                </div>
+
+                <!-- This "nav-toggle" hamburger menu is only visible on mobile -->
+                <!-- You need JavaScript to toggle the "is-active" class on "nav-menu" -->
+                <span class="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
     </nav>
 
     <!-- About Me -->
@@ -108,7 +108,7 @@
         </div>
     </section>
 
-    
+
 
     <!-- Footer -->
     <section class="section-4 has-text-centered container">
