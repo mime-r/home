@@ -4,6 +4,12 @@
 <head>
     <title>Mime's Portfolio ✨</title>
     <!-- css files -->
+    <script src="jquery.js"></script> 
+    <script> 
+    $(function(){
+      $("#includedContent").load("template.html"); 
+    });
+    </script> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.1/css/bulma.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
@@ -97,13 +103,13 @@
             <img class="titlecenteredbold centered badge animate__animated animate__fadeInDown" src="https://img.shields.io/badge/-HTML-181717?style=flat-square&logo=html5" />
             
             <p class="intro animate__animated animate__fadeInDown">
-                I am a music producer and developer. Currently a Y5 student at Anglo Chinese Schoolz
+                I am a music producer and developer. Currently a Y5 student at Anglo Chinese School
                 (Independent) and studying Computer Science. Currently interested in Cyber Security.
             </p>
         </div>
         
     </section>
-
+    <div id="includedContent"></div>
     <!-- Projects -->
     <section id="projects" class="section section-2">
         <div class="container">
