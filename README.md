@@ -1,5 +1,7 @@
-# home
+# mime-r.github.io
 
 my personal website <3
 
-https://mime-r.github.io/home/
+Visit me: http://builtfor.me
+\
+Website Structure
