@@ -8,7 +8,9 @@ var Events = {
 	_FIGHT_SPEED: 100,
 	_EAT_COOLDOWN: 5,
 	_MEDS_COOLDOWN: 7,
+	_LEAVE_COOLDOWN: 1,
 	STUN_DURATION: 4000,
+	BLINK_INTERVAL: false,
 	
 	init: function(options) {
 		this.options = $.extend(
@@ -109,8 +111,8 @@ var Events = {
 		
 		Events.createEatMeatButton().appendTo(btns);
 		if((Path.outfit['medicine'] || 0) != 0) {
-		  Events.createUseMedsButton().appendTo(btns);
-	  }
+			Events.createUseMedsButton().appendTo(btns);
+		}
 		
 		// Set up the enemy attack timer
 		Events._enemyAttackTimer = setTimeout(Events.enemyAttack, scene.attackDelay * 1000);
@@ -123,7 +125,7 @@ var Events = {
 		
 		var btn = new Button.Button({
 			id: 'eat',
-			text: 'eat meat',
+			text: _('eat meat'),
 			cooldown: cooldown,
 			click: Events.eatMeat,
 			cost: { 'cured meat': 1 }
@@ -143,7 +145,7 @@ var Events = {
 		
 		var btn = new Button.Button({
 			id: 'meds',
-			text: 'use meds',
+			text: _('use meds'),
 			cooldown: cooldown,
 			click: Events.useMeds,
 			cost: { 'medicine': 1 }
@@ -438,8 +440,7 @@ var Events = {
 			});
 		}
 		
-		Events._enemyAttackTimer = 
-			setTimeout(Events.enemyAttack, scene.attackDelay * 1000);
+		Events._enemyAttackTimer = setTimeout(Events.enemyAttack, scene.attackDelay * 1000);
 	},
 	
 	winFight: function() {
@@ -453,7 +454,7 @@ var Events = {
 					var btns = $('#buttons', Events.eventPanel());
 					desc.empty();
 					btns.empty();
-					$('<div>').text('the ' + scene.enemy + (scene.plural ? ' are' : ' is') + ' dead.').appendTo(desc);
+					$('<div>').text(scene.deathMessage).appendTo(desc);
 					
 					Events.drawLoot(scene.loot);
 					
@@ -461,8 +462,9 @@ var Events = {
 						// Draw the buttons
 						Events.drawButtons(scene);
 					} else {
-						new Button.Button({
+						Button.cooldown(new Button.Button({
 							id: 'leaveBtn',
+							cooldown: Events._LEAVE_COOLDOWN,
 							click: function() {
 								var scene = Events.activeEvent().scenes[Events.activeScene];
 								if(scene.nextScene && scene.nextScene != 'end') {
@@ -471,13 +473,13 @@ var Events = {
 									Events.endEvent(); 
 								}
 							},
-							text: 'leave'
-						}).appendTo(btns);
+							text: _('leave')
+						}).appendTo(btns));
 						
 						Events.createEatMeatButton(0).appendTo(btns);
 						if((Path.outfit['medicine'] || 0) != 0) {
-						  Events.createUseMedsButton(0).appendTo(btns);
-					  }
+							Events.createUseMedsButton(0).appendTo(btns);
+						}
 					}
 				} catch(e) {
 					// It is possible to die and win if the timing is perfect. Just let it fail.
@@ -495,7 +497,7 @@ var Events = {
 				var num = Math.floor(Math.random() * (loot.max - loot.min)) + loot.min;
 				new Button.Button({
 					id: 'loot_' + k.replace(' ', '-'),
-					text: k + ' [' + num + ']',
+					text: _(k) + ' [' + num + ']',
 					click: Events.getLoot
 				}).data('numLeft', num).appendTo(lootButtons);
 			}
@@ -518,11 +520,11 @@ var Events = {
 		if(lootBtn.length > 0) {
 			var curNum = lootBtn.data('numLeft');
 			curNum += num;
-			lootBtn.text(thing + ' [' + curNum + ']').data('numLeft', curNum);
+			lootBtn.text(_(thing) + ' [' + curNum + ']').data('numLeft', curNum);
 		} else {
 			new Button.Button({
 				id: 'loot_' + thing.replace(' ', '-'),
-				text: thing + ' [' + num + ']',
+				text: _(thing) + ' [' + num + ']',
 				click: Events.getLoot
 			}).data('numLeft', num).insertBefore($('.clear', lootButtons));
 		}
@@ -550,7 +552,7 @@ var Events = {
 					});
 				} else {
 					// #dropMenu gets removed by this.
-					btn.text(name + ' [' + num + ']');
+					btn.text(_(name) + ' [' + num + ']');
 				}
 				var curNum = Path.outfit[name];
 				curNum = typeof curNum == 'number' ? curNum : 0;
@@ -578,7 +580,7 @@ var Events = {
 						}
 						if(numToDrop > 0) {
 							var dropRow = $('<div>').attr('id', 'drop_' + k.replace(' ', '-'))
-								.text(k + ' x' + numToDrop)
+								.text(_(k) + ' x' + numToDrop)
 								.data('thing', k)
 								.data('num', numToDrop)
 								.click(Events.dropStuff);
@@ -595,7 +597,7 @@ var Events = {
 	},
 	
 	createFighterDiv: function(chara, hp, maxhp) {
-		var fighter = $('<div>').addClass('fighter').text(chara).data('hp', hp).data('maxHp', maxhp);
+		var fighter = $('<div>').addClass('fighter').text(_(chara)).data('hp', hp).data('maxHp', maxhp).data('refname',chara);
 		$('<div>').addClass('hp').text(hp+'/'+maxhp).appendTo(fighter);
 		return fighter;
 	},
@@ -609,6 +611,10 @@ var Events = {
 		var desc = $('#description', Events.eventPanel());
 		for(var i in scene.text) {
 			$('<div>').text(scene.text[i]).appendTo(desc);
+		}
+		
+		if(scene.textarea != null) {
+			$('<textarea>').val(scene.textarea).appendTo(desc);
 		}
 		
 		// Draw any loot
@@ -628,10 +634,14 @@ var Events = {
 					id: id,
 					text: info.text,
 					cost: info.cost,
-					click: Events.buttonClick
+					click: Events.buttonClick,
+					cooldown: info.cooldown
 				}).appendTo(btns);
 			if(typeof info.available == 'function' && !info.available()) {
 				Button.setDisabled(b, true);
+			}
+			if(typeof info.cooldown == 'number') {
+				Button.cooldown(b);
 			}
 		}
 		
@@ -686,7 +696,8 @@ var Events = {
 		}
 		
 		if(typeof info.onChoose == 'function') {
-			info.onChoose();
+			var textarea = Events.eventPanel().find('textarea');
+			info.onChoose(textarea.length > 0 ? textarea.val() : null);
 		}
 		
 		// Reward
@@ -722,42 +733,58 @@ var Events = {
 			}
 		}
 	},
+
+	// blinks the browser window title
+	blinkTitle: function() {
+		var title = document.title;
+
+		// every 3 seconds change title to '*** EVENT ***', then 1.5 seconds later, change it back to the original title.
+		Events.BLINK_INTERVAL = setInterval(function() {
+			document.title = _('*** EVENT ***');
+			setTimeout(function() {document.title = title;}, 1500); 
+		}, 3000);
+	},
+
+	stopTitleBlink: function() {
+		clearInterval(Events.BLINK_INTERVAL);
+		Events.BLINK_INTERVAL = false;
+	},
 	
-    // Makes an event happen!
-    triggerEvent: function() {
-    	if(Events.activeEvent() == null) {
-	    	var possibleEvents = [];
-	    	for(var i in Events.EventPool) {
-	    		var event = Events.EventPool[i];
-	    		if(event.isAvailable()) {
-	    			possibleEvents.push(event);
-	    		}
-	    	}
-			
+	// Makes an event happen!
+	triggerEvent: function() {
+		if(Events.activeEvent() == null) {
+			var possibleEvents = [];
+			for(var i in Events.EventPool) {
+				var event = Events.EventPool[i];
+				if(event.isAvailable()) {
+					possibleEvents.push(event);
+				}
+			}
+
 			if(possibleEvents.length == 0) {
 				Events.scheduleNextEvent(0.5);
 				return;
 			} else {
-		    	var r = Math.floor(Math.random()*(possibleEvents.length));
-		    	Events.startEvent(possibleEvents[r]);
-	    	}
-    	}
-    	
-    	Events.scheduleNextEvent();
-    },
-    
-    triggerFight: function() {
-    	var possibleFights = [];
-    	for(var i in Events.Encounters) {
-    		var fight = Events.Encounters[i];
-    		if(fight.isAvailable()) {
-    			possibleFights.push(fight);
-    		}
-    	}
-    	
+				var r = Math.floor(Math.random()*(possibleEvents.length));
+				Events.startEvent(possibleEvents[r]);
+			}
+		}
+
+		Events.scheduleNextEvent();
+	},
+
+	triggerFight: function() {
+		var possibleFights = [];
+		for(var i in Events.Encounters) {
+			var fight = Events.Encounters[i];
+			if(fight.isAvailable()) {
+				possibleFights.push(fight);
+			}
+		}
+
 		var r = Math.floor(Math.random()*(possibleFights.length));
-    	Events.startEvent(possibleFights[r]);
-    },
+		Events.startEvent(possibleFights[r]);
+	},
 	
 	activeEvent: function() {
 		if(Events.eventStack && Events.eventStack.length > 0) {
@@ -769,8 +796,8 @@ var Events = {
 	eventPanel: function() {
 		return Events.activeEvent().eventPanel;
 	},
-    
-    startEvent: function(event, options) {
+
+	startEvent: function(event, options) {
 		if(event) {
 			Engine.event('game event', 'event');
 			Engine.keyLock = true;
@@ -785,30 +812,37 @@ var Events = {
 			Events.loadScene('start');
 			$('div#wrapper').append(Events.eventPanel());
 			Events.eventPanel().animate({opacity: 1}, Events._PANEL_FADE, 'linear');
+			var currentSceneInformation = Events.activeEvent().scenes[Events.activeScene];
+			if (currentSceneInformation.blink) {
+				Events.blinkTitle();
+			}
 		}
-    },
-    
-    scheduleNextEvent: function(scale) {
-    	var nextEvent = Math.floor(Math.random()*(Events._EVENT_TIME_RANGE[1] - Events._EVENT_TIME_RANGE[0])) + Events._EVENT_TIME_RANGE[0];
-    	if(scale > 0) { nextEvent *= scale; }
-    	Engine.log('next event scheduled in ' + nextEvent + ' minutes');
-    	Events._eventTimeout = setTimeout(Events.triggerEvent, nextEvent * 60 * 1000);
-    },
-    
-    endEvent: function() {
-    	Events.eventPanel().animate({opacity:0}, Events._PANEL_FADE, 'linear', function() {
-    		Events.eventPanel().remove();
+	},
+
+	scheduleNextEvent: function(scale) {
+		var nextEvent = Math.floor(Math.random()*(Events._EVENT_TIME_RANGE[1] - Events._EVENT_TIME_RANGE[0])) + Events._EVENT_TIME_RANGE[0];
+		if(scale > 0) { nextEvent *= scale; }
+		Engine.log('next event scheduled in ' + nextEvent + ' minutes');
+		Events._eventTimeout = setTimeout(Events.triggerEvent, nextEvent * 60 * 1000);
+	},
+
+	endEvent: function() {
+		Events.eventPanel().animate({opacity:0}, Events._PANEL_FADE, 'linear', function() {
+			Events.eventPanel().remove();
 			Events.activeEvent().eventPanel = null;
 			Events.eventStack.shift();
-        	Engine.log(Events.eventStack.length + ' events remaining');
-    		Engine.keyLock = false;
-    		// Force refocus on the body. I hate you, IE.
-    		$('body').focus();
-    	});
-    },
-    
-    handleStateUpdates: function(e){
-		if(e.category == 'stores' && Events.activeEvent() != null){
+			Engine.log(Events.eventStack.length + ' events remaining');
+			Engine.keyLock = false;
+			if (Events.BLINK_INTERVAL) {
+				Events.stopTitleBlink();
+			}
+			// Force refocus on the body. I hate you, IE.
+			$('body').focus();
+		});
+	},
+
+	handleStateUpdates: function(e){
+		if((e.category == 'stores' || e.category == 'income') && Events.activeEvent() != null){
 			Events.updateButtons();
 		}
 	}

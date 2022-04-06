@@ -1,6 +1,7 @@
 A Dark Room
 =========
 
-A Minimalist Text Adventure Game
+A Minimalist Text Adventure Game, now on your desktop!
 
-[Click to play](http://rawgithub.com/Continuities/adarkroom/master/index.html)
+Thanks, node-webkit!
+

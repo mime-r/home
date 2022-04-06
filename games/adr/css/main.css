@@ -1,5 +1,5 @@
 /* Fonts */
-body, .tooltip {
+body, .tooltip, select.menuBtn {
 	font-family: "Times New Roman", Times, serif;
 	font-size: 16px;
 	font-weight: normal;
@@ -14,6 +14,10 @@ html {
 body {
 	height: 100%;
 	margin: 0;
+}
+
+::selection{
+	background-color: transparent;
 }
 
 /* Framework stuff */
@@ -48,29 +52,35 @@ div#header {
 	height: 20px;
 }
 
-.deleteSave {
-	position: absolute;
+.menu {
+	position: fixed;
 	right: 10px;
 	bottom: 10px;
-	cursor: pointer;
+	color: #666;
 }
 
-.manualSave {
-	position: absolute;
-	right: 120px;
-	bottom: 10px;
+.menu span {
 	cursor: pointer;
+	float: right;
+	margin-left: 20px;
 }
 
-.deleteSave:hover, .share:hover, .manualSave:hover {
-	text-decoration: underline;	
+.select-wrap {
+	display: inline-block;
+	overflow: hidden;
+	height: 20px;
 }
 
-.share {
-	position: absolute;
-	right: 70px;
-	bottom: 10px;
+select.menuBtn {
+	color: #666;
+	border: none;
 	cursor: pointer;
+	margin: -1px -20px 0 0;
+	background: transparent;
+}
+
+.menu span:hover {
+	text-decoration: underline;
 }
 
 div.headerButton {
@@ -433,6 +443,11 @@ body.noMask .eventTitle:after {
 #description {
 	position: relative;
 	min-height: 100px;
+}
+
+#description textarea {
+	width: 100%;
+	height: 225px;
 }
 
 body.noMask #description {
